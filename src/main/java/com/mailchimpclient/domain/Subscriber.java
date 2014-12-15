@@ -1,12 +1,12 @@
 package com.mailchimpclient.domain;
 
-public class Subscribe {
+public class Subscriber {
 	
 	private String firstName;
 	private String lastName;
 	private String email;
 	
-	public Subscribe(String firstName, String lastName, String email) {
+	public Subscriber(String firstName, String lastName, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

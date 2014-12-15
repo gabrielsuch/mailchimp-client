@@ -1,8 +1,8 @@
 package com.mailchimpclient.request;
 
-import com.mailchimpclient.domain.Subscribe;
+import com.mailchimpclient.domain.Subscriber;
 
-public class SubscribeRequest extends MailchimpRequest<Subscribe> {
+public class SubscribeRequest extends MailchimpRequest<Subscriber> {
 	
 	private String id;
 	private EmailRequest email = new EmailRequest();
@@ -15,7 +15,7 @@ public class SubscribeRequest extends MailchimpRequest<Subscribe> {
 	}
 
 	@Override
-	public void loadRequest(Subscribe entity) {
+	public void loadRequest(Subscriber entity) {
 		email.setEmail(entity.getEmail());
 		mergeVars.setFname(entity.getFirstName());
 		mergeVars.setLname(entity.getLastName());
@@ -42,7 +42,7 @@ public class SubscribeRequest extends MailchimpRequest<Subscribe> {
 		return doubleOptin;
 	}
 	
-	public static SubscribeRequest build(String listId, Subscribe subscribe) {
+	public static SubscribeRequest build(String listId, Subscriber subscribe) {
 		SubscribeRequest request = new SubscribeRequest(listId);
 		request.loadRequest(subscribe);
 		return request;

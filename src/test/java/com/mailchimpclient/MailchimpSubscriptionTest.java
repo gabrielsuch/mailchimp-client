@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mailchimpclient.domain.Subscribe;
-import com.mailchimpclient.operations.ListsOperations;
+import com.mailchimpclient.domain.Subscriber;
+import com.mailchimpclient.operations.MailchimpLists;
 
 public class MailchimpSubscriptionTest {
 	
@@ -23,9 +23,9 @@ public class MailchimpSubscriptionTest {
 	@Test
 	public void subscribeList() {
 		MailchimpClient client = new MailchimpClient(apiKey);
-		Subscribe subscribe = new Subscribe("Gabriel", "Such", "gabrielsuch@gmail.com");
+		Subscriber subscribe = new Subscriber("Gabriel", "Such", "gabrielsuch@gmail.com");
 		
-		ListsOperations listsOperations = new ListsOperations(client);
+		MailchimpLists listsOperations = new MailchimpLists(client);
 		listsOperations.subscribe(listId, subscribe);
 		listsOperations.unsubscribe(listId, subscribe);
 	}

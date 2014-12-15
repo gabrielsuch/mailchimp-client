@@ -24,9 +24,13 @@ public class RestClient {
 		             .request()
 		             .post(Entity.entity(input.getBody(), MediaType.APPLICATION_JSON));
 			
+			if (response.getStatus() == 500) {
+				RestAPIError mappedError = response.readEntity(RestAPIError.class);
+				throw new RestAPIException(mappedError.toString());
+			}
+			
 			if (response.getStatus() != 200) {
-				RestAPIError error = response.readEntity(RestAPIError.class);
-				throw new RestAPIException("Failed : HTTP error code : " + error.toString());
+				throw new RuntimeException("Failed : HTTP error code: " + response.getStatus());
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
