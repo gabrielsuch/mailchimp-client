@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mailchimpclient.domain.MergeField;
 import com.mailchimpclient.domain.Subscriber;
 import com.mailchimpclient.operations.MailchimpLists;
 
@@ -23,7 +24,7 @@ public class MailchimpSubscriptionTest {
 	@Test
 	public void subscribeList() {
 		MailchimpClient client = new MailchimpClient(apiKey);
-		Subscriber subscribe = new Subscriber("Gabriel", "Such", "gabrielsuch@gmail.com");
+		Subscriber subscribe = new Subscriber("Gabriel", "Such", "gabrielsuch@gmail.com", new MergeField("State", "CA"));
 		
 		MailchimpLists listsOperations = new MailchimpLists(client);
 		listsOperations.subscribe(listId, subscribe);

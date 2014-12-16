@@ -1,12 +1,16 @@
 package com.mailchimpclient.request;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.mailchimpclient.domain.MergeField;
 import com.mailchimpclient.domain.Subscriber;
 
 public class SubscribeRequest extends MailchimpRequest<Subscriber> {
 	
 	private String id;
 	private EmailRequest email = new EmailRequest();
-	private MergeVarsRequest mergeVars = new MergeVarsRequest();
+	private Map<String, Object> mergeVars = new HashMap<String, Object>();
 	private boolean updateExisting = true;
 	private boolean doubleOptin = false;
 	
@@ -17,9 +21,14 @@ public class SubscribeRequest extends MailchimpRequest<Subscriber> {
 	@Override
 	public void loadRequest(Subscriber entity) {
 		email.setEmail(entity.getEmail());
-		mergeVars.setFname(entity.getFirstName());
-		mergeVars.setLname(entity.getLastName());
-		mergeVars.setEmail(entity.getEmail());
+		
+		mergeVars.put("Fname", entity.getFirstName());
+		mergeVars.put("Lname", entity.getLastName());
+		mergeVars.put("Email", entity.getEmail());
+		
+		for (MergeField mergeField : entity.getMergeFields()) {
+			mergeVars.put(mergeField.getField(), mergeField.getValue());
+		}
 	}
 	
 	public String getId() {
@@ -30,7 +39,7 @@ public class SubscribeRequest extends MailchimpRequest<Subscriber> {
 		return email;
 	}
 	
-	public MergeVarsRequest getMergeVars() {
+	public Map<String, Object> getMergeVars() {
 		return mergeVars;
 	}
 	

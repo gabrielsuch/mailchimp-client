@@ -2,6 +2,7 @@ package com.mailchimpclient.operations;
 
 import com.mailchimpclient.MailchimpClient;
 import com.mailchimpclient.RestRequest;
+import com.mailchimpclient.domain.MergeField;
 import com.mailchimpclient.domain.Subscriber;
 import com.mailchimpclient.request.SubscribeRequest;
 
@@ -15,7 +16,7 @@ public class MailchimpLists extends MailchimpOperations {
 	 * Subscribe the provided email to a list. 
 	 * 
 	 */
-	public void subscribe(String listId, Subscriber subscribe) {
+	public void subscribe(String listId, Subscriber subscribe, MergeField... mergeFields) {
 		String path = "lists/subscribe.json";
 		getMailchimpClient().execute(subscribeOperation(listId, subscribe, path));
 	}
@@ -24,7 +25,7 @@ public class MailchimpLists extends MailchimpOperations {
 	 *  Unsubscribe the given email address from the list
 	 *  
 	 */
-	public void unsubscribe(String listId, Subscriber subscribe) {
+	public void unsubscribe(String listId, Subscriber subscribe, MergeField... mergeFields) {
 		String path = "lists/unsubscribe.json";
 		getMailchimpClient().execute(subscribeOperation(listId, subscribe, path));
 	}
