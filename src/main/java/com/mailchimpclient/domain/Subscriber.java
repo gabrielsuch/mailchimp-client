@@ -1,19 +1,20 @@
 package com.mailchimpclient.domain;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Subscriber {
 	
-	private String firstName;
-	private String lastName;
-	private String email;
-	private List<MergeField> mergeFields = new ArrayList<MergeField>();
+	private final String firstName;
+	private final String lastName;
+	private final String email;
+	private final List<MergeField> mergeFields;
 	
 	public Subscriber(String firstName, String lastName, String email, MergeField... mergeFields) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.mergeFields = new LinkedList<MergeField>();
 		
 		for (MergeField mergeField : mergeFields) {
 			this.mergeFields.add(mergeField);
