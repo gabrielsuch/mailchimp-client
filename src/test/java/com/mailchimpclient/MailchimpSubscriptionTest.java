@@ -11,24 +11,32 @@ import com.mailchimpclient.operations.MailchimpLists;
 
 public class MailchimpSubscriptionTest {
 	
-	private String apiKey;
+	private MailchimpLists listsOperations;
 	private String listId;
 	
 	@Before
 	public void setup() {
-		ResourceBundle rb = ResourceBundle.getBundle("config"); // It requires a config.properties under src/test/resources
-		apiKey = rb.getString("API_KEY");
+		ResourceBundle rb = ResourceBundle.getBundle("config");
+		String apiKey = rb.getString("API_KEY");
 		listId = rb.getString("LIST_ID");
+
+		MailchimpClient client = new MailchimpClient(apiKey);
+		listsOperations = new MailchimpLists(client);
 	}
 	
 	@Test
 	public void subscribeList() {
-		MailchimpClient client = new MailchimpClient(apiKey);
-		Subscriber subscribe = new Subscriber("Gabriel", "Such", "gabrielsuch@gmail.com", new MergeField("State", "CA"));
-		
-		MailchimpLists listsOperations = new MailchimpLists(client);
-		listsOperations.subscribe(listId, subscribe);
-		listsOperations.unsubscribe(listId, subscribe);
+		listsOperations.subscribe(listId, subscriber());
+	}
+
+	@Test
+	public void unsubscribeList() {
+		listsOperations.subscribe(listId, subscriber());
+		listsOperations.unsubscribe(listId, subscriber());
+	}
+
+	private Subscriber subscriber() {
+		return new Subscriber("Gabriel", "Such", "gabrielsuch@gmail.com", new MergeField("State", "CA"));
 	}
 	
 }

@@ -8,9 +8,9 @@ import com.mailchimpclient.domain.Subscriber;
 
 public class SubscribeRequest extends MailchimpRequest<Subscriber> {
 	
-	private String id;
-	private EmailRequest email = new EmailRequest();
-	private Map<String, Object> mergeVars = new HashMap<String, Object>();
+	private final String id;
+	private final EmailRequest email = new EmailRequest();
+	private final Map<String, Object> mergeVars = new HashMap<String, Object>();
 	private boolean updateExisting = true;
 	private boolean doubleOptin = false;
 	

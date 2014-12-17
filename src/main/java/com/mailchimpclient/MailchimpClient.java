@@ -5,17 +5,23 @@ import com.mailchimpclient.request.MailchimpRequest;
 
 public class MailchimpClient {
 
-	private final String apiKey;
-	private final MailchimpDC dc;
+	private final MailchimpAPIKey apiKey;
 	private final RestClient client;
 
-	public MailchimpClient(String apiKey, RestClient client) {
+	public MailchimpClient(MailchimpAPIKey apiKey, RestClient client) {
 		this.apiKey = apiKey;
-		this.dc = MailchimpDC.fromApiKey(apiKey);
 		this.client = client;
 	}
 
+	public MailchimpClient(String apiKey, RestClient client) {
+		this(new MailchimpAPIKey(apiKey), client);
+	}
+
 	public MailchimpClient(String apiKey) {
+		this(apiKey, new RestClient());
+	}
+
+	public MailchimpClient(MailchimpAPIKey apiKey) {
 		this(apiKey, new RestClient());
 	}
 
@@ -24,8 +30,7 @@ public class MailchimpClient {
 			throw new InvalidAPIRequestException();
 		}
 
-		request.getBody().setApikey(apiKey);
-		client.post(dc.getEndpoint(), request);
+		client.post(apiKey.getEndpoint(), apiKey.authenticate(request));
 	}
 
 }

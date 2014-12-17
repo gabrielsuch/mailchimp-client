@@ -6,6 +6,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import org.glassfish.jersey.client.ClientConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +20,7 @@ public class RestClient {
 	
 	private final Client client = ClientBuilder.newClient(getClientConfig());
 	
-	public <T> void post(String url, RestRequest<?> input) {
+	public void post(String url, RestRequest<?> input) {
 		try {
 			Response response = client.target(url).path(input.getPath())
 		             .request()
@@ -40,6 +42,9 @@ public class RestClient {
 	private ObjectMapper getObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+		mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+		mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
 		return mapper;
 	}
 	

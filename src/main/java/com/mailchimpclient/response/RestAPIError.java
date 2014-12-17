@@ -2,41 +2,39 @@ package com.mailchimpclient.response;
 
 public class RestAPIError {
 
-	private String status;
-	private String code;
-	private String name;
-	private String error;
+	private final String status;
+	private final String code;
+	private final String name;
+	private final String error;
+
+	public RestAPIError(String status, String code, String name, String error) {
+		this.status = status;
+		this.code = code;
+		this.name = name;
+		this.error = error;
+	}
+
+	protected RestAPIError() {
+		this.status = null;
+		this.code = null;
+		this.name = null;
+		this.error = null;
+	}
 
 	public String getStatus() {
 		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public String getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getError() {
 		return error;
-	}
-
-	public void setError(String error) {
-		this.error = error;
 	}
 
 	@Override
