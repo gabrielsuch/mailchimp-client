@@ -21,10 +21,6 @@ public class MailchimpClient {
 		this(apiKey, new RestClient());
 	}
 
-	public MailchimpClient(MailchimpAPIKey apiKey) {
-		this(apiKey, new RestClient());
-	}
-
 	public void execute(RestRequest<? extends MailchimpRequest<?>> request) {
 		if (request == null || request.getBody() == null) {
 			throw new InvalidAPIRequestException();

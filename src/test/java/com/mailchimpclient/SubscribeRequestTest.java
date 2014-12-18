@@ -6,6 +6,8 @@ import com.mailchimpclient.request.SubscribeRequest;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class SubscribeRequestTest {
 
@@ -25,6 +27,8 @@ public class SubscribeRequestTest {
         assertEquals(email, request.getEmail().getEmail());
         assertEquals(listId, request.getId());
         assertEquals("value", request.getMergeVars().get("example"));
+        assertFalse(request.isDoubleOptin());
+        assertTrue(request.isUpdateExisting());
     }
 
 }

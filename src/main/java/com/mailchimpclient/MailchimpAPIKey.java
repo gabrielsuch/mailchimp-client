@@ -9,12 +9,8 @@ public class MailchimpAPIKey {
     private final MailchimpDC dc;
 
     public MailchimpAPIKey(String apiKey) {
-        if (apiKey == null) {
-            throw new InvalidAPIKeyException("APIKey is required");
-        }
-
-        if (apiKey.split("-").length != 2) {
-            throw new InvalidAPIKeyException("Invalid APIKey format");
+        if (apiKey == null || apiKey.split("-").length != 2) {
+            throw new InvalidAPIKeyException("Invalid APIKey");
         }
 
         this.apiKey = apiKey;

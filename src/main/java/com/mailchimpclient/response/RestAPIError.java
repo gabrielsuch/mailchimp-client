@@ -39,7 +39,7 @@ public class RestAPIError {
 
 	@Override
 	public String toString() {
-		return "RestAPIError [status=" + status + ", code=" + code + ", name=" + name + ", error=" + error + "]";
+		return "RestAPIError [status=" + getStatus() + ", code=" + getCode() + ", name=" + getName() + ", error=" + getError() + "]";
 	}
 
 }
