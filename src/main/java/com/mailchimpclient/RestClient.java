@@ -1,21 +1,21 @@
 package com.mailchimpclient;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.mailchimpclient.exception.HttpError;
+import com.mailchimpclient.exception.RestAPIException;
+import com.mailchimpclient.response.RestAPIError;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.mailchimpclient.exception.HttpError;
+import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.client.ClientConfig;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import com.mailchimpclient.exception.RestAPIException;
-import com.mailchimpclient.response.RestAPIError;
 
 public class RestClient {
 	
@@ -29,19 +29,25 @@ public class RestClient {
 		this(ClientBuilder.newClient(getClientConfig()));
 	}
 	
-	public void post(String url, RestRequest<?> input) {
+	public Response post(String url, RestRequest<?> input) {
 		Response response = client.target(url).path(input.getPath())
 				 .request()
 				 .post(Entity.entity(input.getBody(), MediaType.APPLICATION_JSON));
 
-		if (response.getStatus() == 500) {
+		if (response.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 			RestAPIError mappedError = response.readEntity(RestAPIError.class);
 			throw new RestAPIException(mappedError.toString());
 		}
 
-		if (response.getStatus() != 200) {
+		if (response.getStatus() != Status.OK.getStatusCode()) {
 			throw new HttpError("HTTP error code: " + response.getStatus());
 		}
+		
+		return response;
+	}
+	
+	public <T> T post(String url, RestRequest<?> input, Class<T> response) {
+	    return post(url, input).readEntity(response);
 	}
 	
 	private static ObjectMapper getObjectMapper() {
@@ -49,6 +55,7 @@ public class RestClient {
 		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 		mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
 		mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+	    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		return mapper;
 	}

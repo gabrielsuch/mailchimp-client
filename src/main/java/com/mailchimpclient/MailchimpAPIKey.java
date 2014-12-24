@@ -17,7 +17,7 @@ public class MailchimpAPIKey {
         this.dc = new MailchimpDC(apiKey.split("-")[1]);
     }
 
-    public RestRequest<? extends MailchimpRequest<?>> authenticate(RestRequest<? extends MailchimpRequest<?>> request) {
+    public <T extends MailchimpRequest<?>> RestRequest<T> getAuthenticatedRequest(RestRequest<T> request) {
         request.getBody().setApikey(apiKey);
         return request;
     }

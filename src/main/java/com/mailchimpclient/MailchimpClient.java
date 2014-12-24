@@ -22,11 +22,19 @@ public class MailchimpClient {
 	}
 
 	public void execute(RestRequest<? extends MailchimpRequest<?>> request) {
-		if (request == null || request.getBody() == null) {
-			throw new InvalidAPIRequestException();
-		}
-
-		client.post(apiKey.getEndpoint(), apiKey.authenticate(request));
+        validateMailchimpRequest(request);
+		client.post(apiKey.getEndpoint(), apiKey.getAuthenticatedRequest(request));
+	}
+	
+	public <T> T execute(RestRequest<? extends MailchimpRequest<?>> request, Class<T> response) {
+	    validateMailchimpRequest(request);
+        return client.post(apiKey.getEndpoint(), apiKey.getAuthenticatedRequest(request), response);
+	}
+	
+	private void validateMailchimpRequest(RestRequest<?> request) {
+        if (request == null || request.getBody() == null) {
+            throw new InvalidAPIRequestException();
+        }
 	}
 
 }

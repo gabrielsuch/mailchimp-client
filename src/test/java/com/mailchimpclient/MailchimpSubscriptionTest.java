@@ -1,13 +1,13 @@
 package com.mailchimpclient;
 
-import java.util.ResourceBundle;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import static org.junit.Assert.*;
+import com.mailchimpclient.response.MembersResponse;
 import com.mailchimpclient.domain.MergeField;
 import com.mailchimpclient.domain.Subscriber;
 import com.mailchimpclient.operations.MailchimpLists;
+import java.util.ResourceBundle;
+import org.junit.Before;
+import org.junit.Test;
 
 public class MailchimpSubscriptionTest {
 	
@@ -33,6 +33,13 @@ public class MailchimpSubscriptionTest {
 	public void unsubscribeList() {
 		listsOperations.subscribe(listId, subscriber());
 		listsOperations.unsubscribe(listId, subscriber());
+	}
+	
+	@Test
+	public void retrieveMembers() {
+	    listsOperations.subscribe(listId, subscriber());
+	    MembersResponse members = listsOperations.getMembers(listId);
+	    assertTrue(members.getTotal() > 0);
 	}
 
 	private Subscriber subscriber() {
